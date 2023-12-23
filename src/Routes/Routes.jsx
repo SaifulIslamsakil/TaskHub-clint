@@ -40,6 +40,10 @@ const Routes = createBrowserRouter(
                 path:"projects",
                 element:<Projects></Projects>
             },
+            {
+                path:"task",
+                element:<Task></Task>
+            },
         ]
        }
     ]
