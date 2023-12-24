@@ -4,7 +4,7 @@ import { MdOutlineArrowForwardIos } from "react-icons/md";
 const TaskInfo = () => {
     return (
         <div className="space-y-10">
-            <div className=" grid grid-cols-4 gap-3">
+            <div className=" grid md:grid-cols-2 lg:grid-cols-4 gap-3">
                 <div className=" bg-purple-800 shadow-2xl p-3 flex justify-between items-center rounded-lg text-white">
                     <div className=" flex items-center gap-3">
                         <p className=" bg-white  p-2 rounded-lg text-xl text-black"><FaTasks /></p>
@@ -56,7 +56,7 @@ const TaskInfo = () => {
             </div>
             <div className=" bg-white border-2 border-gray-200 p-5 space-y-4">
                 <h2 className=" text-xl font-semibold">Project Information</h2>
-                <div className=" flex justify-between items-center">
+                <div className=" lg:flex justify-between items-center">
                     <div className=" space-x-2">
                         <span className=" text-xl font-semibold">Show</span>
                         <select className="select select-bordered select-sm ">

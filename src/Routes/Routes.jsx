@@ -7,6 +7,10 @@ import Dashbord from "../Pages/Dashbord/Dashbord";
 import Task from "../Pages/Task/Task";
 import ProjectDashboard from "../Pages/ProjectDashboard/ProjectDashboard";
 import Projects from "../Pages/Projects/Projects";
+import Leaders from "../Pages/Leaders/Leaders";
+import TicketsView from "../Pages/TicketsView/TicketsView";
+import Clints from "../Pages/Clints/Clints";
+import Members from "../Pages/Members/Members";
 
 const Routes = createBrowserRouter(
     [
@@ -44,6 +48,23 @@ const Routes = createBrowserRouter(
                 path:"task",
                 element:<Task></Task>
             },
+            {
+                path:"leaders",
+                element:<Leaders></Leaders>
+            },
+            {
+                path:"tickets_view",
+                element:<TicketsView></TicketsView>
+            },
+            {
+                path:"clints",
+                element:<Clints></Clints>
+            },
+            {
+                path:"members",
+                element:<Members></Members>
+            },
+          
         ]
        }
     ]

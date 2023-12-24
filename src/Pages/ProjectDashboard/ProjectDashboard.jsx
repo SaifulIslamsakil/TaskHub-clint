@@ -27,8 +27,8 @@ const ProjectDashboard = () => {
     };
 
     return (
-        <div className=" p-10 space-y-10">
-            <div className="grid grid-cols-3 gap-5 ">
+        <div className=" p-5 mt-5 space-y-10">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3  gap-5 ">
                 <div className=" bg-white shadow-2xl p-5 flex justify-between items-center rounded-lg">
                     <div className=" flex items-center gap-3">
                         <p className=" bg-purple-800 text-white p-4 rounded-lg text-3xl"><FaTasks /></p>
@@ -67,8 +67,8 @@ const ProjectDashboard = () => {
                 </div>
             </div>
 
-            <div className=" grid grid-cols-5 gap-5">
-                <div className=" col-span-3 flex justify-between items-center  bg-white shadow-lg  rounded-lg p-5 gap-3">
+            <div className=" grid lg:grid-cols-5 gap-5">
+                <div className=" lg:col-span-3 space-y-5 lg:flex justify-between items-center  bg-white shadow-lg  rounded-lg p-5 gap-3">
                     <div className=" flex-1 space-y-2">
                         <h3 className=" text-2xl font-semibold">Dylan Hunter</h3>
                         <p>Welcome back Dylan Hunter.Integer molestie, arcu non porta sollicitudin, arcu felis aliquam urna, placerat maximus lorem urna commodo sem. Pellentesque venenatis leo quam, sed mattis sapien lobortis ut.placerat maximus lorem urna commodo sem</p>
@@ -78,7 +78,7 @@ const ProjectDashboard = () => {
                         <img src="http://pixelwibes.com/template/my-task/html/dist/assets/images/task-view.svg" alt="" />
                     </div>
                 </div>
-                <div className=" col-span-2 p-3 bg-white rounded-lg shadow-lg">
+                <div className=" lg:col-span-2 p-3 bg-white rounded-lg shadow-lg">
                     <h4 className=" text-xl font-semibold">Create Project Credentials</h4>
                     <p>Create a Project credentials now and never miss</p>
                     <form action="" onSubmit={handleSubmit(handelFromSubmit)}>
