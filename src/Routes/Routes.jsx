@@ -11,6 +11,7 @@ import Leaders from "../Pages/Leaders/Leaders";
 import TicketsView from "../Pages/TicketsView/TicketsView";
 import Clints from "../Pages/Clints/Clints";
 import Members from "../Pages/Members/Members";
+import Private from "../PrivateRoute/PrivateRoute"
 
 const Routes = createBrowserRouter(
     [
@@ -34,35 +35,35 @@ const Routes = createBrowserRouter(
         },
        {
         path:"Dashbord",
-        element:<Dashbord></Dashbord>,
+        element:<Private><Dashbord></Dashbord></Private>,
         children:[
             {
                 path:"projectDashboard",
-                element:<ProjectDashboard></ProjectDashboard>
+                element:<Private><ProjectDashboard></ProjectDashboard></Private>
             },
             {
                 path:"projects",
-                element:<Projects></Projects>
+                element:<Private><Projects></Projects></Private>
             },
             {
                 path:"task",
-                element:<Task></Task>
+                element:<Private><Task></Task></Private>
             },
             {
                 path:"leaders",
-                element:<Leaders></Leaders>
+                element:<Private><Leaders></Leaders></Private>
             },
             {
                 path:"tickets_view",
-                element:<TicketsView></TicketsView>
+                element:<Private><TicketsView></TicketsView></Private>
             },
             {
                 path:"clints",
-                element:<Clints></Clints>
+                element:<Private><Clints></Clints></Private>
             },
             {
                 path:"members",
-                element:<Members></Members>
+                element:<Private></Private>
             },
           
         ]

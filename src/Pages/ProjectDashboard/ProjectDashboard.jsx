@@ -27,7 +27,7 @@ const ProjectDashboard = () => {
     };
 
     return (
-        <div className=" p-5 mt-5 space-y-10">
+        <div className="  pl-16 p-5 lg:p-5 mt-5 space-y-10">
             <div className="grid md:grid-cols-2 lg:grid-cols-3  gap-5 ">
                 <div className=" bg-white shadow-2xl p-5 flex justify-between items-center rounded-lg">
                     <div className=" flex items-center gap-3">

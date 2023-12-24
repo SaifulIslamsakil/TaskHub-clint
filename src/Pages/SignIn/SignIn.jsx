@@ -4,11 +4,12 @@ import { useForm } from "react-hook-form";
 import Social from "../../Shred/Social/Social";
 import { FaEyeSlash } from "react-icons/fa";
 import img from "../../assets/home/banner_img.png"
-import { Link } from "react-router-dom";
+import { Link,  useNavigate } from "react-router-dom";
 
 const SignIn = () => {
     const [hiddenPass, setHiddenPass] = useState(false)
-    const { SingIn } = useContext(AuthContext)
+    const { SignIn } = useContext(AuthContext)
+    const navigation = useNavigate()
     const handelChangeInputType = () => {
         setHiddenPass(!hiddenPass)
     }
@@ -19,9 +20,9 @@ const SignIn = () => {
     } = useForm()
 
     const handelFromSubmit = (data) => {
-        SingIn(data.email, data.password)
+        SignIn(data.email, data.password)
             .then(res => {
-                console.log(res)
+                navigation("/Dashbord/projectDashboard")
             })
             .catch(error => {
                 console.log(error)

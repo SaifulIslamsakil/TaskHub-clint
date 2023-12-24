@@ -7,10 +7,10 @@ import { MdOutlineTaskAlt } from "react-icons/md";
 import { MdLeaderboard } from "react-icons/md";
 import { FaBandAid } from "react-icons/fa";
 import { FaUsers } from "react-icons/fa6";
-import { useState } from "react";
+// import { useState } from "react";
 
 const Dashbord = () => {
-    const [dashboard, setDashboard] = useState(false)
+    // const [dashboard, setDashboard] = useState(false)
     const manu = <>
         <li>
             <NavLink
@@ -19,17 +19,17 @@ const Dashbord = () => {
                     isPending ? "pending" : isActive ? "active" : " hover:border-b-2 hover:border-purple-600"
                 }
             >
-                <p className=" flex   items-center gap-4 text-white text-2xl"> <FaHome /> <span>  DashBoard</span></p>
+                <p className=" flex   items-center gap-4 hover:bg-green-500 p-2  text-white text-2xl"> <FaHome /> <span  className="hidden lg:block">  DashBoard</span></p>
             </NavLink>
         </li>
         <li>
             <NavLink
                 to="/Dashbord/projects"
                 className={({ isActive, isPending }) =>
-                    isPending ? "pending" : isActive ? "active" : " hover:border-b-2 hover:border-purple-600"
+                    isPending ? "pending" : isActive ? "t" : ""
                 }
             >
-                <p className=" flex   items-center gap-4 text-white text-2xl"> <BsFillBagCheckFill /> <span>  Projects</span></p>
+                <p className=" flex   items-center gap-4 hover:bg-green-500 p-2  text-white text-2xl "> <BsFillBagCheckFill /> <span className="hidden lg:block">  Projects</span></p>
             </NavLink>
         </li>
         <li>
@@ -39,7 +39,7 @@ const Dashbord = () => {
                     isPending ? "pending" : isActive ? "active" : " hover:border-b-2 hover:border-purple-600"
                 }
             >
-                <p className=" flex   items-center gap-4 text-white text-2xl"> <MdOutlineTaskAlt /> <span>  Tasks</span></p>
+                <p className=" flex   items-center gap-4 hover:bg-green-500 p-2  text-white text-2xl"> <MdOutlineTaskAlt /> <span className="hidden lg:block">  Tasks</span></p>
             </NavLink>
         </li>
         <li>
@@ -49,7 +49,7 @@ const Dashbord = () => {
                     isPending ? "pending" : isActive ? "active" : " hover:border-b-2 hover:border-purple-600"
                 }
             >
-                <p className=" flex   items-center gap-4 text-white text-2xl"> <MdLeaderboard /> <span>  Leaders</span></p>
+                <p className=" flex   items-center gap-4 hover:bg-green-500 p-2  text-white text-2xl"> <MdLeaderboard /> <span className="hidden lg:block" >  Leaders</span></p>
             </NavLink>
         </li>
 
@@ -60,7 +60,7 @@ const Dashbord = () => {
                     isPending ? "pending" : isActive ? "active" : " hover:border-b-2 hover:border-purple-600"
                 }
             >
-                <p className=" flex   items-center gap-4 text-white text-2xl"> <FaBandAid /> <span>  Tickets View</span></p>
+                <p className=" flex   items-center gap-4 hover:bg-green-500 p-2  text-white text-2xl"> <FaBandAid /> <span  className="hidden lg:block">  Tickets View</span></p>
             </NavLink>
         </li>
         <li>
@@ -70,7 +70,7 @@ const Dashbord = () => {
                     isPending ? "pending" : isActive ? "active" : " hover:border-b-2 hover:border-purple-600"
                 }
             >
-                <p className=" flex   items-center gap-4 text-white text-2xl"> <FaHome /> <span>  Clints</span></p>
+                <p className=" flex   items-center gap-4 hover:bg-green-500 p-2  text-white text-2xl"> <FaHome /> <span  className="hidden lg:block">  Clints</span></p>
             </NavLink>
         </li>
 
@@ -82,15 +82,15 @@ const Dashbord = () => {
                     isPending ? "pending" : isActive ? "active" : " hover:border-b-2 hover:border-purple-600"
                 }
             >
-                <p className=" flex   items-center gap-4 text-white text-2xl"> <FaUsers /> <span>  Members</span></p>
+                <p className=" flex   items-center gap-4 hover:bg-green-500 p-2  text-white text-2xl"> <FaUsers /> <span  className="hidden lg:block">  Members</span></p>
             </NavLink>
         </li>
     </>
     return (
         <div className=" bg-purple-100 flex">
            
-            <div className=" w-80 h-screen bg-purple-800 px-7 py-10 hidden lg:block">
-                <div className=" flex gap-2 items-center">
+            <div className=" fixed lg:static z-50 lg:w-80 h-screen bg-purple-800  py-10 lg:block lg:p-5">
+                <div className=" hidden lg:flex gap-2 items-center">
                     <span className=" w-14 h-14 rounded-full bg-white flex items-center justify-center text-3xl"><BiTask /></span>
                     <h3 className=" text-2xl font-semibold text-white">My Task</h3>
                 </div>

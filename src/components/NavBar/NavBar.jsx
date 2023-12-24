@@ -13,26 +13,7 @@ const NavBar = () => {
                 Home
             </NavLink>
             </li>
-            <li>  
-            <NavLink
-                to="/messages"
-                className={({ isActive, isPending }) =>
-                    isPending ? "pending" : isActive ? "active" : " hover:border-b-2 hover:border-purple-600"
-                }
-            >
-                Task
-            </NavLink>
-            </li>
-            <li>   
-            <NavLink
-                to="/messages"
-                className={({ isActive, isPending }) =>
-                    isPending ? "pending" : isActive ? "active" : " hover:border-b-2 hover:border-purple-600"
-                }
-            >
-                Project
-            </NavLink>
-            </li>
+        
             <li>  
             <NavLink
                 to="/Dashbord"

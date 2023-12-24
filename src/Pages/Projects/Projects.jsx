@@ -27,7 +27,7 @@ const Projects = () => {
             return res.data
         }
     })
-    console.log(SeeProject)
+    
 
     const {
         register,
@@ -51,14 +51,14 @@ const Projects = () => {
             })
 
     }
-    console.log(editeData)
+
 
     const handelEditeClouseForm = () => {
         setEditeForm(false)
     }
 
     const handelFromSumit = (data) => {
-        console.log(data)
+    
 
         const projectInfo = {
             budget: data.budget,
@@ -126,13 +126,13 @@ const Projects = () => {
                         });
                         refetch() 
                     }
-                    console.log(res.data)
+                   
                 })
             }
           });
     }
     return (
-        <div className=" p-5 ">
+        <div className=" px-16 ">
 
             {/* create project form */}
 
@@ -334,10 +334,10 @@ const Projects = () => {
                 </div>
             </div>
 
-            <div className=" md:flex justify-between items-center  space-y-3 border-b border-black">
+            <div className=" lg:flex justify-between items-center  space-y-3 border-b border-black">
                 <h2 className=" text-3xl font-bold">Projects</h2>
-                <div className=" md:flex gap-3 items-center pb-3  space-y-5 ">
-                    <button onClick={handelCreateForm} className=" btn w-full lg:w-40 bg-purple-800  text-white hover:bg-purple-600">Create Project <FaPlus /></button>
+                <div className=" lg:flex gap-3 items-center pb-3  space-y-5 ">
+                    <button onClick={handelCreateForm} className=" btn w-full lg:w-40 bg-purple-800 mx-auto  text-white hover:bg-purple-600">Create Project <FaPlus /></button>
                     <ul className=" flex items-center gap-4 border border-black    font-semibold">
                         <li className=" bg-purple-800 text-white p-3">All</li>
                         <li>Started</li>
@@ -355,8 +355,8 @@ const Projects = () => {
                         <div className=" flex justify-between items-center">
                             <h2 className=" text-xl font-bold">UI/UX Design</h2>
                             <div className=" flex items-center text-xl">
-                                <span onClick={() => handelEdite(project._id)} className=" border p-3 rounded-lg hover:bg-purple-800 hover:text-white"><FaEdit /></span>
-                                <span onClick={()=>handleDeleteProject(project._id)} className=" border p-3 rounded-lg hover:bg-purple-800 hover:text-white"><MdDelete /></span>
+                                <span onClick={() => handelEdite(project._id)} className=" border p-3 rounded-lg hover:bg-green-500 hover:text-white text-green-500"><FaEdit /></span>
+                                <span onClick={()=>handleDeleteProject(project._id)} className=" border p-3 rounded-lg hover:bg-red-500 hover:text-white text-red-500 "><MdDelete /></span>
                             </div>
                         </div>
                         <div className="avatar flex justify-center">

@@ -6,10 +6,12 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../Provider/Provider";
 import { updateProfile } from "firebase/auth";
 import Auth from "../../FireBase/FireBase-confiq";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 const SignUp = () => {
     const [hiddenPass, setHiddenPass] = useState(false)
     const { SingUp } = useContext(AuthContext)
+    const location = useLocation()
+    const navigate = useNavigate()
     const handelChangeInputType = () => {
         setHiddenPass(!hiddenPass)
     }
@@ -26,6 +28,7 @@ const SignUp = () => {
                     updateProfile(Auth.currentUser, {
                         displayName: data.name
                     })
+                navigate("/Dashbord/projectDashboard")
                 }
             })
             .catch(error => {

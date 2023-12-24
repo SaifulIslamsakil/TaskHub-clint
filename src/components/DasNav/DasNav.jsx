@@ -6,19 +6,32 @@ import { FaTasks } from "react-icons/fa";
 import { FaUsers } from "react-icons/fa6";
 import { LuLogOut } from "react-icons/lu";
 import { TbUserSquareRounded } from "react-icons/tb";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../Provider/Provider";
 const DasNav = () => {
     const [profile, setProfile] = useState(false)
     const [notification, setNotification] = useState(false)
+    const {SignOut} = useContext(AuthContext)
+    const navigate = useNavigate()
     const handleProfile = () => {
         setProfile(!profile)
     }
     const handelNotification = () => {
         setNotification(!notification)
     }
+    const handelSignOut =()=>{
+        SignOut()
+        .then(res=>{
+            console.log(res)
+            navigate("/")
+        })
+        .cetch(error=>{
+            console.log(error)
+        })
+    }
     return (
-        <div className=" w-full lg:flex justify-between space-y-8 lg:space-y-0 border boderee items-center bg-white shadow-2xl  p-5 relative " >
+        <div className="  w-full md:flex justify-between space-y-8 lg:space-y-0 border boderee items-center bg-white shadow-2xl  md:pl-14 md:pr-4 md:py-3 p-5  relative " >
             <div className="input input-bordered w-full max-w-xs flex items-center space-y-3">
                 <input type="search" className=" w-full" placeholder="Search" name="" id="" />
                 <span className=" text-2xl"> <IoSearch /></span>
@@ -56,7 +69,7 @@ const DasNav = () => {
                     </div>
 
                 </div>
-                <div className={` bg-white rounded-lg p-5  right-10 absolute top-20 space-y-4 border border-black ${profile ? "block" : "hidden"}`}>
+                <div className={` bg-white rounded-lg p-5 z-50  right-10 absolute top-20 space-y-4 border border-black ${profile ? "block" : "hidden"}`}>
                     <div className=" flex gap-2 4 items-center border-b border-black pb-4">
                         <img className=" w-10 h-10 rounded-full" src="https://i.ibb.co/YXnP9pd/avatar4.jpg" alt="" />
                         <div>
@@ -65,9 +78,9 @@ const DasNav = () => {
                         </div>
                     </div>
                     <ul className=" text-xl space-y-2 border-b border-black pb-4">
-                       <Link to="/Dashbord/task"> <li className=" flex gap-4 items-center "> <FaTasks />My Tesk</li></Link>
-                        <li className=" flex gap-4 items-center"> <FaUsers />Members</li>
-                        <li className=" flex gap-4 items-center"> <LuLogOut />Logout</li>
+                       <Link to="/Dashbord/task"> <li className=" flex hover:bg-purple-200 p-2 gap-4 items-center "> <FaTasks />My Tesk</li></Link>
+                        <li className=" flex gap-4 items-center hover:bg-purple-200 p-2"> <FaUsers />Members</li>
+                        <li onClick={handelSignOut} className=" flex gap-4 items-center hover:bg-purple-200 p-2"> <LuLogOut />Logout</li>
                     </ul>
                     <p className=" flex items-center gap-4 text-xl"><TbUserSquareRounded /> Add Personal Accout</p>
 

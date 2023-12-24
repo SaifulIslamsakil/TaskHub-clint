@@ -2,10 +2,21 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaPlus } from "react-icons/fa6";
 import { ImCross } from "react-icons/im";
-
-
+import { RiMessage2Line } from "react-icons/ri";
+import { IoLinkSharp } from "react-icons/io5";
+import UseAxiosPublice from "../../Hooks/UseAxiosPublic"
+import Swal from "sweetalert2";
+import { useQuery } from "@tanstack/react-query";
 const Task = () => {
     const [createform, setCreateForm] = useState(false)
+    const AxiosPublice = UseAxiosPublice()
+    const { data: SeeTask = [], refetch } = useQuery({
+        queryKey: ['all-class'],
+        queryFn: async () => {
+            const res = await AxiosPublice.get("/seeTask")
+            return res.data
+        }
+    })
     const {
         register,
         handleSubmit,
@@ -17,11 +28,30 @@ const Task = () => {
         setCreateForm(false)
     }
     const handelFromSumit = (data) => {
-        console.log(data)
+        const taskInfo = {
+            category: data.category,
+            description: data.description,
+            end_date: data.end_date,
+            priority: data.priority,
+            project_name: data.project_name,
+            start_date: data.start_date
+        }
+        AxiosPublice.post("/createTask",taskInfo)
+        .then(res=>{
+            if(res.data.acknowledged){
+                Swal.fire({
+                    title: "Good job!",
+                    text: "your projcet hasbeen updated!",
+                    icon: "success"
+                }); 
+                setCreateForm(false)
+                refetch()
+            }
+        })
     }
     return (
-        <div className=" mt-5 space-y-10 p-5 ">
-            <div className={` w-full h-screen top-0 left-0 bg-black bg-opacity-30 z-50 absolute flex justify-center items-center ${createform ? "top-0 duration-300" : "-top-[1500px]"}`}>
+        <div className=" space-y-10 px-5 ">
+            <div className={` w-full h-screen top-0 left-0 bg-black bg-opacity-30 z-50 absolute flex justify-center items-center ${createform ? "top-0 duration-300" : "-top-[1500px], hidden"}`}>
                 <div className=" bg-white w-[500px] p-5 rounded-lg h-[550px] space-y-4 overflow-y-scroll  ">
                     <div className=" flex justify-between items-center">
                         <h2 className=" text-xl font-semibold">Create Project </h2>
@@ -79,13 +109,7 @@ const Task = () => {
                             </div>
                         </div>
                         <div>
-                            <div className=" flex gap-4">
-                                <label className=" w-full ">
-                                    <div className="label">
-                                        <span >Budget</span>
-                                    </div>
-                                    <input type="number" {...register("budget", { required: true })} placeholder="Project Name" className="input input-bordered w-full  " />
-                                </label>
+                            <div>
                                 <label className="form-control w-full ">
                                     <div className="label">
                                         <span className="label-text">Priority</span>
@@ -118,7 +142,7 @@ const Task = () => {
                     </form>
                 </div>
             </div>
-            <div className=" flex justify-between items-center p-4 border-b border-black ">
+            <div className=" md:flex space-y-2 justify-between items-center p-4 border-b border-black ">
                 <h2 className=" text-3xl font-bold">Task Management</h2>
                 <div className=" flex gap-3  ">
                     <button onClick={handelCreateForm} className=" btn  bg-purple-800  text-white hover:bg-purple-600">Create Project <FaPlus /></button>
@@ -216,7 +240,70 @@ const Task = () => {
                         <button className=" btn  bg-purple-800  text-white hover:bg-purple-600">Remove</button>
                     </div>
                 </div>
-
+            </div>
+            <div className=" grid md:grid-cols-2 lg:grid-cols-3 gap-3 space-y-3 p-4 ">
+                <div className=" space-y-5">
+                    <h4 className=" text-xl text-center font-bold">In Progress</h4>
+                    {
+                        SeeTask?.map(task=><div key={task._id} className=" bg-white p-4 rounded-lg space-y-3 border-b-8 border-purple-500 ">
+                        <div className=" flex justify-between items-center ">
+                            <h2 className=" p-2 rounded-full bg-sky-200">UI/UX Design</h2>
+                            <div className=" text-center">
+                                <img className=" w-10 h-10 rounded-full mx-auto" src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" alt="" />
+                                <p className=" bg-purple-200 rounded-lg mt-2 p-1">Medium</p>
+                            </div>
+                        </div>
+                        <p className=" text-justify">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Distinctio sint reprehenderit itaque libero dolorum vitae natus,</p>
+                        <div className=" flex justify-between items-center">
+                            <div className=" flex items-center gap-1">
+                                <p className=" flex items-center gap-1"><RiMessage2Line /> 54</p>
+                                <p className=" flex items-center gap-1"><IoLinkSharp /> 43</p>
+                            </div>
+                            <p className=" bg-green-200 p-1 rounded-lg">Social Geek Made</p>
+                        </div>
+                    </div>)
+                    }
+                </div>
+                <div className=" space-y-5">
+                    <h4 className=" text-xl text-center font-bold">Needs Review</h4>
+                    <div className=" bg-white p-4 rounded-lg space-y-3 border-b-8 border-green-500 ">
+                        <div className=" flex justify-between items-center ">
+                            <h2 className=" p-2 rounded-full bg-yellow-200">UI/UX Design</h2>
+                            <div className=" text-center">
+                                <img className=" w-10 h-10 rounded-full mx-auto" src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" alt="" />
+                                <p className=" bg-blue-200 rounded-lg mt-2 p-1">Medium</p>
+                            </div>
+                        </div>
+                        <p className=" text-justify">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Distinctio sint reprehenderit itaque libero dolorum vitae natus,</p>
+                        <div className=" flex justify-between items-center">
+                            <div className=" flex items-center gap-1">
+                                <p className=" flex items-center gap-1"><RiMessage2Line /> 54</p>
+                                <p className=" flex items-center gap-1"><IoLinkSharp /> 43</p>
+                            </div>
+                            <p className=" bg-red-200 p-1 rounded-lg">Social Geek Made</p>
+                        </div>
+                    </div>
+                </div>
+                <div className=" space-y-5">
+                    <h4 className=" text-xl text-center font-bold">Completed</h4>
+                    <div className=" bg-white p-4 rounded-lg space-y-3 border-b-8 border-yellow-500 ">
+                        <div className=" flex justify-between items-center ">
+                            <h2 className=" p-2 rounded-full bg-emerald-200">UI/UX Design</h2>
+                            <div className=" text-center">
+                                <img className=" w-10 h-10 rounded-full mx-auto" src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" alt="" />
+                                <p className=" bg-slate-200 rounded-lg mt-2 p-1">Medium</p>
+                            </div>
+                        </div>
+                        <p className=" text-justify">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Distinctio sint reprehenderit itaque libero dolorum vitae natus,</p>
+                        <div className=" flex justify-between items-center">
+                            <div className=" flex items-center gap-1">
+                                <p className=" flex items-center gap-1"><RiMessage2Line /> 54</p>
+                                <p className=" flex items-center gap-1"><IoLinkSharp /> 43</p>
+                            </div>
+                            <p className=" bg-lime-200 p-1 rounded-lg">Social Geek Made</p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>
