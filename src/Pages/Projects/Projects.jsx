@@ -132,7 +132,7 @@ const Projects = () => {
           });
     }
     return (
-        <div className=" px-16 ">
+        <div className=" px-16 lg:p-5 ">
 
             {/* create project form */}
 
@@ -228,7 +228,7 @@ const Projects = () => {
                         <div className=" flex justify-end pt-3 gap-3  ">
 
 
-                            <button type="btn" className=" btn  bg-purple-800  text-white hover:bg-purple-600">Update  <FaPlus /></button>
+                            <button type="btn" className=" btn  bg-purple-800  text-white hover:bg-purple-600">create  <FaPlus /></button>
                         </div>
                     </form>
                 </div>
@@ -351,9 +351,9 @@ const Projects = () => {
                 {
                     SeeProject?.map(project => <div key={project._id} className=" bg-white p-5 rounded-lg relative space-y-3 shadow-lg">
                         <p className=" rounded-lg absolute -top-8 left-32 bg-purple-800 text-white flex items-center justify-center text-2xl p-5"><BsSendPlus className="text-center" /></p>
-                        <p className=" text-center  ">Social Geek Made</p>
+                        <p className=" text-center  ">{project?.project_name}</p>
                         <div className=" flex justify-between items-center">
-                            <h2 className=" text-xl font-bold">UI/UX Design</h2>
+                            <h2 className=" text-xl font-bold">{project.category}</h2>
                             <div className=" flex items-center text-xl">
                                 <span onClick={() => handelEdite(project._id)} className=" border p-3 rounded-lg hover:bg-green-500 hover:text-white text-green-500"><FaEdit /></span>
                                 <span onClick={()=>handleDeleteProject(project._id)} className=" border p-3 rounded-lg hover:bg-red-500 hover:text-white text-red-500 "><MdDelete /></span>
