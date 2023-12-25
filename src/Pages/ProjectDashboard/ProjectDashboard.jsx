@@ -5,7 +5,19 @@ import { VscTasklist } from "react-icons/vsc";
 import { useForm } from "react-hook-form";
 import { Chart } from "react-google-charts";
 import TaskInfo from "../../components/TaskInfo/TaskInfo";
+import { useQuery } from "@tanstack/react-query";
+import UseAxiosPublice from "../../Hooks/UseAxiosPublic"
+
 const ProjectDashboard = () => {
+    const AxiosPublice = UseAxiosPublice()
+
+    const { data: SeeTask = [], refetch } = useQuery({
+        queryKey: ['all-class'],
+        queryFn: async () => {
+            const res = await AxiosPublice.get("/seeTask")
+            return res.data
+        }
+    })
     const {
         register,
         handleSubmit,
@@ -27,14 +39,14 @@ const ProjectDashboard = () => {
     };
 
     return (
-        <div className="  pl-16 p-5 lg:p-5 mt-5 space-y-10">
+        <div className="  p-5 lg:p-5 mt-5 space-y-10">
             <div className="grid md:grid-cols-2 lg:grid-cols-3  gap-5 ">
                 <div className=" bg-white shadow-2xl p-5 flex justify-between items-center rounded-lg">
                     <div className=" flex items-center gap-3">
                         <p className=" bg-purple-800 text-white p-4 rounded-lg text-3xl"><FaTasks /></p>
                         <div className=" text-xl font-semibold">
                             <p >Tootal Task</p>
-                            <p>123</p>
+                            <p>{SeeTask.length}</p>
                         </div>
                     </div>
                     <div className=" text-3xl">
@@ -46,7 +58,7 @@ const ProjectDashboard = () => {
                         <p className=" bg-purple-800 text-white p-4 rounded-lg text-3xl"><GoTasklist /></p>
                         <div className=" text-xl font-semibold">
                             <p >Completed Task</p>
-                            <p>123</p>
+                            <p>{SeeTask.length}</p>
                         </div>
                     </div>
                     <div className=" text-3xl">
@@ -58,7 +70,7 @@ const ProjectDashboard = () => {
                         <p className=" bg-purple-800 text-white p-4 rounded-lg text-3xl"><VscTasklist /></p>
                         <div className=" text-xl font-semibold">
                             <p >Progress Task</p>
-                            <p>123</p>
+                            <p>{SeeTask.length}</p>
                         </div>
                     </div>
                     <div className=" text-3xl">
@@ -119,7 +131,7 @@ const ProjectDashboard = () => {
                 />
             </div>
             <div>
-                <TaskInfo></TaskInfo>
+                <TaskInfo ></TaskInfo>
             </div>
         </div>
     );

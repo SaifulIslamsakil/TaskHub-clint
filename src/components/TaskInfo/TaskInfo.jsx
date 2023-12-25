@@ -1,16 +1,27 @@
+import { useQuery } from "@tanstack/react-query";
 import { FaTasks } from "react-icons/fa";
 import { MdOutlineArrowForwardIos } from "react-icons/md";
+import UseAxiosPublice from "../../Hooks/UseAxiosPublic"
 
 const TaskInfo = () => {
+    const AxiosPublice = UseAxiosPublice()
+
+    const { data: SeeTask = [], refetch } = useQuery({
+        queryKey: ['all-class'],
+        queryFn: async () => {
+            const res = await AxiosPublice.get("/seeTask")
+            return res.data
+        }
+    })
     return (
         <div className="space-y-10">
             <div className=" grid md:grid-cols-2 lg:grid-cols-4 gap-3">
                 <div className=" bg-purple-800 shadow-2xl p-3 flex justify-between items-center rounded-lg text-white">
                     <div className=" flex items-center gap-3">
                         <p className=" bg-white  p-2 rounded-lg text-xl text-black"><FaTasks /></p>
-                        <div className=" text-xl font-semibold">
+                        <div >
                             <p >Tootal Task</p>
-                            <p>123</p>
+                            <p>1232</p>
                         </div>
                     </div>
                     <div className=" text-2xl">
@@ -20,9 +31,9 @@ const TaskInfo = () => {
                 <div className=" bg-purple-800 shadow-2xl p-3 flex justify-between items-center rounded-lg text-white">
                     <div className=" flex items-center gap-3">
                         <p className=" bg-white  p-2 rounded-lg text-xl text-black"><FaTasks /></p>
-                        <div className=" text-xl font-semibold">
-                            <p >Tootal Task</p>
-                            <p>123</p>
+                        <div>
+                            <p >Coming Projects</p>
+                            <p>532</p>
                         </div>
                     </div>
                     <div className=" text-2xl">
@@ -32,9 +43,9 @@ const TaskInfo = () => {
                 <div className=" bg-purple-800 shadow-2xl p-3 flex justify-between items-center rounded-lg text-white">
                     <div className=" flex items-center gap-3">
                         <p className=" bg-white  p-2 rounded-lg text-xl text-black"><FaTasks /></p>
-                        <div className=" text-xl font-semibold">
-                            <p >Tootal Task</p>
-                            <p>123</p>
+                        <div >
+                            <p >Finished Projects</p>
+                            <p>442</p>
                         </div>
                     </div>
                     <div className=" text-2xl">
@@ -44,7 +55,7 @@ const TaskInfo = () => {
                 <div className=" bg-purple-800 shadow-2xl p-3 flex justify-between items-center rounded-lg text-white">
                     <div className=" flex items-center gap-3">
                         <p className=" bg-white  p-2 rounded-lg text-xl text-black"><FaTasks /></p>
-                        <div className=" text-xl font-semibold">
+                        <div>
                             <p >Tootal Task</p>
                             <p>123</p>
                         </div>
@@ -87,16 +98,18 @@ const TaskInfo = () => {
                             </tr>
                         </thead>
                         <tbody className=" text-sm">
-                            <tr>
-                                <th>1</th>
-                                <td>Cy Ganderton</td>
-                                <td>Quality Control Specialist</td>
-                                <td>Littel, Schaden and Vandervort</td>
-                                <td>Canada</td>
+                            {SeeTask?.map((task, ids) =><tr key={task._id}>
+                                <th>{ids +1}</th>
+                                <td>{task. project_name}</td>
+                                <td>{task.start_date}</td>
+                                <td>{task.end_date}</td>
+                                <td className=" md:flex gap-2 items-center">
+                                    <img className="" src="https://i.ibb.co/zrVXTkH/avatar1.jpg" alt="" />
+                                    <p>Saiful islam</p>
+                                </td>
                                 <td><progress className="progress progress-primary " value="40" max="100"></progress></td>
-                                <td>Blue</td>
-                            </tr>
-                            
+                                <td className=" text-green-500">{task.priority}</td>
+                            </tr>)}
                             
                         </tbody>
                     </table>

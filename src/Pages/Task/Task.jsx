@@ -1,17 +1,21 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaPlus } from "react-icons/fa6";
 import { ImCross } from "react-icons/im";
-import { RiMessage2Line } from "react-icons/ri";
-import { IoLinkSharp } from "react-icons/io5";
+
 import UseAxiosPublice from "../../Hooks/UseAxiosPublic"
 import Swal from "sweetalert2";
 import { useQuery } from "@tanstack/react-query";
+import { DndProvider } from "react-dnd";
+import DragAndDrop from "../DragAndDrop/DragAndDrop";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { AuthContext } from "../../Provider/Provider";
 const Task = () => {
     const [createform, setCreateForm] = useState(false)
     const AxiosPublice = UseAxiosPublice()
+    const {user} = useContext(AuthContext)
     const { data: SeeTask = [], refetch } = useQuery({
-        queryKey: ['all-class'],
+        queryKey: ['SeeTask'],
         queryFn: async () => {
             const res = await AxiosPublice.get("/seeTask")
             return res.data
@@ -36,18 +40,30 @@ const Task = () => {
             project_name: data.project_name,
             start_date: data.start_date
         }
-        AxiosPublice.post("/createTask",taskInfo)
-        .then(res=>{
-            if(res.data.acknowledged){
-                Swal.fire({
-                    title: "Good job!",
-                    text: "your projcet hasbeen updated!",
-                    icon: "success"
-                }); 
-                setCreateForm(false)
-                refetch()
-            }
-        })
+        const notificationInfo = {
+            userName : user?.displayName,
+            notificationMasseged : "Add a new Task",
+            project_name: data.project_name,
+        }
+        AxiosPublice.post("/createTask", taskInfo)
+            .then(res => {
+
+                if (res.data.acknowledged) {
+                    AxiosPublice.post("/notification", notificationInfo)
+                    .then(res=>{
+                        if(res.data.acknowledged){
+                            Swal.fire({
+                                title: "Good job!",
+                                text: "your projcet hasbeen updated!",
+                                icon: "success"
+                            });
+                            setCreateForm(false)
+                            refetch()
+                        }
+                    })
+                    
+                }
+            })
     }
     return (
         <div className=" space-y-10 px-5 ">
@@ -184,21 +200,21 @@ const Task = () => {
                 <div className=" bg-white p-5 shadow-lg space-y-5 rounded-lg">
                     <h2 className=" text-xl font-semibold">Recent Activity</h2>
                     <div className=" flex gap-3 items-center border-b pb-2">
-                        <img className=" w-10 h-10 rounded-full" src="" alt="" />
+                        <img className=" w-10 h-10 rounded-full" src="" alt="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
                         <div>
                             <p className=" text-lg font-semibold">Rechard Add New Task</p>
                             <p>20Min ago</p>
                         </div>
                     </div>
                     <div className=" flex gap-3 items-center border-b pb-2">
-                        <img className=" w-10 h-10 rounded-full" src="" alt="" />
+                        <img className=" w-10 h-10 rounded-full" src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" alt="" />
                         <div>
                             <p className=" text-lg font-semibold">Rechard Add New Task</p>
                             <p>20Min ago</p>
                         </div>
                     </div>
                     <div className=" flex gap-3 items-center border-b pb-2">
-                        <img className=" w-10 h-10 rounded-full" src="" alt="" />
+                        <img className=" w-10 h-10 rounded-full" src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" alt="" />
                         <div>
                             <p className=" text-lg font-semibold">Rechard Add New Task</p>
                             <p>20Min ago</p>
@@ -211,7 +227,7 @@ const Task = () => {
                     <h2 className=" text-xl font-semibold">Allocated Task Members</h2>
                     <div className=" flex items-center justify-between border-b pb-2">
                         <div className=" flex  gap-2 items-center">
-                            <img className="w-10 h-10 rounded-full" src="" alt="" />
+                            <img className="w-10 h-10 rounded-full" src="https://i.ibb.co/YXnP9pd/avatar4.jpg" alt="" />
                             <div>
                                 <p className=" font-semibold">Lucinda Massey</p>
                                 <p>Ui/UX Designer</p>
@@ -221,7 +237,7 @@ const Task = () => {
                     </div>
                     <div className=" flex items-center justify-between border-b pb-2">
                         <div className=" flex  gap-2 items-center">
-                            <img className="w-10 h-10 rounded-full" src="" alt="" />
+                            <img className="w-10 h-10 rounded-full" src="https://i.ibb.co/YXnP9pd/avatar4.jpg" alt="" />
                             <div>
                                 <p className=" font-semibold">Lucinda Massey</p>
                                 <p>Ui/UX Designer</p>
@@ -231,7 +247,7 @@ const Task = () => {
                     </div>
                     <div className=" flex items-center justify-between border-b pb-2">
                         <div className=" flex  gap-2 items-center">
-                            <img className="w-10 h-10 rounded-full" src="" alt="" />
+                            <img className="w-10 h-10 rounded-full" src="https://i.ibb.co/YXnP9pd/avatar4.jpg" alt="" />
                             <div>
                                 <p className=" font-semibold">Lucinda Massey</p>
                                 <p>Ui/UX Designer</p>
@@ -241,69 +257,12 @@ const Task = () => {
                     </div>
                 </div>
             </div>
-            <div className=" grid md:grid-cols-2 lg:grid-cols-3 gap-3 space-y-3 p-4 ">
-                <div className=" space-y-5">
-                    <h4 className=" text-xl text-center font-bold">In Progress</h4>
-                    {
-                        SeeTask?.map(task=><div key={task._id} className=" bg-white p-4 rounded-lg space-y-3 border-b-8 border-purple-500 ">
-                        <div className=" flex justify-between items-center ">
-                            <h2 className=" p-2 rounded-full bg-sky-200">UI/UX Design</h2>
-                            <div className=" text-center">
-                                <img className=" w-10 h-10 rounded-full mx-auto" src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" alt="" />
-                                <p className=" bg-purple-200 rounded-lg mt-2 p-1">Medium</p>
-                            </div>
-                        </div>
-                        <p className=" text-justify">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Distinctio sint reprehenderit itaque libero dolorum vitae natus,</p>
-                        <div className=" flex justify-between items-center">
-                            <div className=" flex items-center gap-1">
-                                <p className=" flex items-center gap-1"><RiMessage2Line /> 54</p>
-                                <p className=" flex items-center gap-1"><IoLinkSharp /> 43</p>
-                            </div>
-                            <p className=" bg-green-200 p-1 rounded-lg">Social Geek Made</p>
-                        </div>
-                    </div>)
-                    }
-                </div>
-                <div className=" space-y-5">
-                    <h4 className=" text-xl text-center font-bold">Needs Review</h4>
-                    <div className=" bg-white p-4 rounded-lg space-y-3 border-b-8 border-green-500 ">
-                        <div className=" flex justify-between items-center ">
-                            <h2 className=" p-2 rounded-full bg-yellow-200">UI/UX Design</h2>
-                            <div className=" text-center">
-                                <img className=" w-10 h-10 rounded-full mx-auto" src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" alt="" />
-                                <p className=" bg-blue-200 rounded-lg mt-2 p-1">Medium</p>
-                            </div>
-                        </div>
-                        <p className=" text-justify">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Distinctio sint reprehenderit itaque libero dolorum vitae natus,</p>
-                        <div className=" flex justify-between items-center">
-                            <div className=" flex items-center gap-1">
-                                <p className=" flex items-center gap-1"><RiMessage2Line /> 54</p>
-                                <p className=" flex items-center gap-1"><IoLinkSharp /> 43</p>
-                            </div>
-                            <p className=" bg-red-200 p-1 rounded-lg">Social Geek Made</p>
-                        </div>
+            <div>
+                <DndProvider backend={HTML5Backend}>
+                    <div>
+                        <DragAndDrop></DragAndDrop>
                     </div>
-                </div>
-                <div className=" space-y-5">
-                    <h4 className=" text-xl text-center font-bold">Completed</h4>
-                    <div className=" bg-white p-4 rounded-lg space-y-3 border-b-8 border-yellow-500 ">
-                        <div className=" flex justify-between items-center ">
-                            <h2 className=" p-2 rounded-full bg-emerald-200">UI/UX Design</h2>
-                            <div className=" text-center">
-                                <img className=" w-10 h-10 rounded-full mx-auto" src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" alt="" />
-                                <p className=" bg-slate-200 rounded-lg mt-2 p-1">Medium</p>
-                            </div>
-                        </div>
-                        <p className=" text-justify">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Distinctio sint reprehenderit itaque libero dolorum vitae natus,</p>
-                        <div className=" flex justify-between items-center">
-                            <div className=" flex items-center gap-1">
-                                <p className=" flex items-center gap-1"><RiMessage2Line /> 54</p>
-                                <p className=" flex items-center gap-1"><IoLinkSharp /> 43</p>
-                            </div>
-                            <p className=" bg-lime-200 p-1 rounded-lg">Social Geek Made</p>
-                        </div>
-                    </div>
-                </div>
+                </DndProvider>
             </div>
 
         </div>

@@ -1,10 +1,22 @@
 import { useState } from "react";
 import Containt from "../Containt/Containt";
 import { useDrop } from "react-dnd";
+import UseAxiosPublice from "../../Hooks/UseAxiosPublic"
+import { useQuery } from "@tanstack/react-query";
 
 
 const DragAndDrop = () => {
     const [border, setborder] = useState([])
+    const [border2, setborder2] = useState([])
+    const AxiosPublice = UseAxiosPublice()
+
+    const { data: SeeTask = [], refetch } = useQuery({
+        queryKey: ['all-class'],
+        queryFn: async () => {
+            const res = await AxiosPublice.get("/seeTask")
+            return res.data
+        }
+    })
     const contant = [
         {
             id: 1,
@@ -31,23 +43,34 @@ const DragAndDrop = () => {
         })
     }))
     const add = (id)=>{
-       const contants = contant.filter((pic => id === pic.id))
+        console.log(id)
+       const contants = SeeTask.filter((pic => id === pic._id))
        setborder((border) => [...border, contants[0]])
+    //    setborder2((border) => [...border, contants[0]])
+    
     }
-    console.log(border)
+    console.log(SeeTask)
     return (
-        <div>
-            <h4 className=" text-center text-xl font-semibold mt-3 "> somoy ear jonno pura task ta korte pari nai smy takle kore ditam</h4>
-
+        <div className=" grid grid-cols-1 gap-5 md:grid-cols-2 ">
+            <div className=" space-y-4">
+                <h1 className=" text-2xl font-semibold text-center "> In Progress </h1>
+            <div className="  space-y-4">
             {
-                contant?.map(cont => <Containt key={cont.id}
-                opo ={cont}
+                SeeTask?.map(contents => <Containt key={contents._id}
+                    contents ={contents}
                 ></Containt>)
             }
-            <div ref={drop} className=" h-screen border-4 border-black p-5 mt-10 ">
-                {border.map(cont=><Containt key={cont.id}
-                opo={cont}
+            </div>
+            </div>
+           
+            <div className=" space-y-4">
+           <h1 className=" text-2xl font-semibold text-center space-y-4 ">Completed</h1>
+
+            <div ref={drop} className=" h-screen space-y-4 mt-10 ">
+                {border.map(contents=><Containt key={contents._id}
+                contents={contents}
                 ></Containt>)}
+            </div>
             </div>
         </div>
     );

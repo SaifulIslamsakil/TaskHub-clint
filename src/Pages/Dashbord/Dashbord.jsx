@@ -87,9 +87,9 @@ const Dashbord = () => {
         </li>
     </>
     return (
-        <div className=" bg-purple-100 flex">
+        <div className=" flex">
            
-            <div className=" fixed lg:static z-50 lg:w-80 h-screen bg-purple-800  py-10 lg:block lg:p-5">
+            <div className="  lg:static z-50 lg:w-80  bg-purple-800  py-10 lg:block lg:p-5">
                 <div className=" hidden lg:flex gap-2 items-center">
                     <span className=" w-14 h-14 rounded-full bg-white flex items-center justify-center text-3xl"><BiTask /></span>
                     <h3 className=" text-2xl font-semibold text-white">My Task</h3>

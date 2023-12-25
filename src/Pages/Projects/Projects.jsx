@@ -9,12 +9,15 @@ import { MdMessage } from "react-icons/md";
 import { AiFillClockCircle } from "react-icons/ai";
 import { ImCross } from "react-icons/im";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import UseAxiosPublic from "../../Hooks/UseAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
+import UpdateProject from "../../components/UpdateProject/UpdateProject"
+import { AuthContext } from "../../Provider/Provider";
 
 const Projects = () => {
+    const { user } = useContext(AuthContext)
     const [createform, setCreateForm] = useState(false)
     const [editeform, setEditeForm] = useState(false)
     const [editeData, setEditeData] = useState([])
@@ -27,7 +30,6 @@ const Projects = () => {
             return res.data
         }
     })
-    
 
     const {
         register,
@@ -52,13 +54,7 @@ const Projects = () => {
 
     }
 
-
-    const handelEditeClouseForm = () => {
-        setEditeForm(false)
-    }
-
     const handelFromSumit = (data) => {
-    
 
         const projectInfo = {
             budget: data.budget,
@@ -69,43 +65,33 @@ const Projects = () => {
             project_name: data.project_name,
             start_date: data.start_date
         }
+        const notificationInfo = {
+            userName: user?.displayName,
+            notificationMasseged: "Add a new project",
+            project_name: data.project_name,
+        }
+
         AxiosPublice.post("/createProject", projectInfo)
             .then(res => {
                 if (res.data.acknowledged) {
-                    Swal.fire({
-                        title: "Good job!",
-                        text: "your projcet succefullly!",
-                        icon: "success"
-                    });
-                    setCreateForm(false)
-                    refetch()
+                    AxiosPublice.post("/notification", notificationInfo)
+                        .then(res => {
+                            if (res.data.acknowledged) {
+                                Swal.fire({
+                                    title: "Good job!",
+                                    text: "your projcet succefullly!",
+                                    icon: "success"
+                                });
+                                setCreateForm(false)
+                                refetch()
+                            }
+                        })
+
                 }
             })
     }
-    const handelEditeFromSumit = (data) => {
-        const updateInfo = {
-            budget: data.budget,
-            category: data.category,
-            description: data.description,
-            end_date: data.end_date,
-            priority: data.priority,
-            project_name: data.project_name,
-            start_date: data.start_date
-        }
-        AxiosPublice.put(`/updateData/${editeData?._id}`, updateInfo)
-            .then(res => {
-                if(res.data.modifiedCount>0){
-                    Swal.fire({
-                        title: "Good job!",
-                        text: "your projcet hasbeen updated!",
-                        icon: "success"
-                    }); 
-                    setEditeForm(false)
-                    refetch()
-                }
-            })
-    }
-    const handleDeleteProject = id =>{
+
+    const handleDeleteProject = id => {
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -114,25 +100,25 @@ const Projects = () => {
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes, delete it!"
-          }).then((result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
                 AxiosPublice.delete(`deleteProjectData/${id}`)
-                .then(res=>{
-                    if(res.data.deletedCount>0){
-                        Swal.fire({
-                            title: "Good job!",
-                            text: "your projcet hasbeen deleted",
-                            icon: "success"
-                        });
-                        refetch() 
-                    }
-                   
-                })
+                    .then(res => {
+                        if (res.data.deletedCount > 0) {
+                            Swal.fire({
+                                title: "Good job!",
+                                text: "your projcet hasbeen deleted",
+                                icon: "success"
+                            });
+                            refetch()
+                        }
+
+                    })
             }
-          });
+        });
     }
     return (
-        <div className=" px-16 lg:p-5 ">
+        <div className="  p-5 ">
 
             {/* create project form */}
 
@@ -236,114 +222,17 @@ const Projects = () => {
 
             {/* Update project form */}
 
-            <div className={` w-full h-screen top-0 left-0 bg-black bg-opacity-30 z-50 absolute flex justify-center items-center ${editeform ? "top-0 duration-300" : "-top-[1500px] hidden"}`}>
-                <div className=" bg-white w-[500px] p-5 rounded-lg h-96 lg:h-[550px] space-y-4 overflow-y-scroll  ">
-                    <div className=" flex justify-between items-center">
-                        <h2 className=" text-xl font-semibold">Edite your Project Project </h2>
-                        <p onClick={handelEditeClouseForm}><ImCross /></p>
-                    </div>
-                    <form onSubmit={handleSubmit(handelEditeFromSumit)} className=" space-y-1 relative">
-                        <div>
-                            <label className=" w-full ">
-                                <div className="label">
-                                    <span >Project Name</span>
-                                </div>
-                                <input type="text" {...register("project_name", { required: true })} placeholder="Project Name" className="input input-bordered w-full  " />
-                            </label>
-                        </div>
-                        <div>
-                            <label className="form-control w-full ">
-                                <div className="label">
-                                    <span className="label-text">Project Category</span>
-                                </div>
-                                <select {...register("category", { required: true })} className="select select-bordered">
-                                    <option disabled selected>Select categories</option>
-                                    <option value="Apps Development">Apps Development</option>
-                                    <option value="WEB Development">WEB Development</option>
-                                    <option value="UI & UX Design">UI & UX Design</option>
-                                    <option value="Marketiong">Marketiong</option>
-                                    <option value="SEO">SEO</option>
-                                </select>
-                            </label>
-                        </div>
 
-                        {/* <div>
-                            <label className="form-control w-full ">
-                                <div className="label">
-                                    <span className="label-text">Pick a file</span>
-                                </div>
-                                <input {...register("file", { required: true })} type="file" className="file-input file-input-bordered w-full " />
-                            </label>
-                        </div> */}
-
-                        <div>
-                            <div className=" lg:flex gap-4">
-                                <label className=" w-full ">
-                                    <div className="label">
-                                        <span >Project Start Date</span>
-                                    </div>
-                                    <input type="date" {...register("start_date", { required: true })} placeholder="Project Name" className="input input-bordered w-full  " />
-                                </label>
-
-                                <label className=" w-full ">
-                                    <div className="label">
-                                        <span >Project End Date</span>
-                                    </div>
-                                    <input type="date" {...register("end_date", { required: true })} placeholder="Project Name" className="input input-bordered w-full  " />
-                                </label>
-                            </div>
-                        </div>
-                        <div>
-                            <div className=" flex gap-4">
-                                <label className=" w-full ">
-                                    <div className="label">
-                                        <span >Budget</span>
-                                    </div>
-                                    <input type="number" {...register("budget", { required: true })} placeholder="Project Name" className="input input-bordered w-full  " />
-                                </label>
-                                <label className="form-control w-full ">
-                                    <div className="label">
-                                        <span className="label-text">Priority</span>
-                                    </div>
-                                    <select {...register("priority", { required: true })} className="select select-bordered">
-                                        <option disabled selected>Select Priority </option>
-                                        <option value="Highest">Highest</option>
-                                        <option value="Ledium">Ledium</option>
-                                        <option value="Low">Low</option>
-
-                                    </select>
-                                </label>
-                            </div>
-                        </div>
-                        <div>
-                            <label className="form-control">
-                                <div className="label">
-                                    <span className="label-text">Description (optional)</span>
-                                </div>
-                                <textarea {...register("description")} className="textarea textarea-bordered h-24" placeholder="Add any extra details aboute requies"></textarea>
-
-                            </label>
-                        </div>
-
-                        <div className=" flex justify-end pt-3 gap-3  ">
-
-
-                            <button type="btn" className=" btn  bg-purple-800  text-white hover:bg-purple-600">Create  <FaPlus /></button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
+            <UpdateProject
+                editeform={editeform}
+                setEditeForm={setEditeForm}
+                id={editeData?._id}
+            ></UpdateProject>
             <div className=" lg:flex justify-between items-center  space-y-3 border-b border-black">
                 <h2 className=" text-3xl font-bold">Projects</h2>
                 <div className=" lg:flex gap-3 items-center pb-3  space-y-5 ">
                     <button onClick={handelCreateForm} className=" btn w-full lg:w-40 bg-purple-800 mx-auto  text-white hover:bg-purple-600">Create Project <FaPlus /></button>
-                    <ul className=" flex items-center gap-4 border border-black    font-semibold">
-                        <li className=" bg-purple-800 text-white p-3">All</li>
-                        <li>Started</li>
-                        <li>Approval</li>
-                        <li>Completed</li>
-                    </ul>
+
                 </div>
 
             </div>
@@ -356,7 +245,7 @@ const Projects = () => {
                             <h2 className=" text-xl font-bold">{project.category}</h2>
                             <div className=" flex items-center text-xl">
                                 <span onClick={() => handelEdite(project._id)} className=" border p-3 rounded-lg hover:bg-green-500 hover:text-white text-green-500"><FaEdit /></span>
-                                <span onClick={()=>handleDeleteProject(project._id)} className=" border p-3 rounded-lg hover:bg-red-500 hover:text-white text-red-500 "><MdDelete /></span>
+                                <span onClick={() => handleDeleteProject(project._id)} className=" border p-3 rounded-lg hover:bg-red-500 hover:text-white text-red-500 "><MdDelete /></span>
                             </div>
                         </div>
                         <div className="avatar flex justify-center">

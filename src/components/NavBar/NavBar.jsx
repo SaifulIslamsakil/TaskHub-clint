@@ -5,7 +5,7 @@ const NavBar = () => {
     const manu = <>
         <li>
             <NavLink
-                to="/messages"
+                to="/"
                 className={({ isActive, isPending }) =>
                     isPending ? "pending" : isActive ? "active" : " hover:border-b-2 hover:border-purple-600"
                 }
@@ -36,7 +36,7 @@ const NavBar = () => {
         </li>
     </>
     return (
-        <div className=" flex  justify-between items-center p-5">
+        <div className="  fixed flex  justify-between items-center p-5 w-full bg-white shadow-lg shadow-purple-100">
             <h3 className=" text-4xl  font-semibold">Task<span className=" text-purple-600">Hub</span></h3>
             <ul className=" flex gap-5 text-xl font-semibold text-purple-600">
                 {manu}
